@@ -12,7 +12,15 @@
 # 3. long term
 - skrypt llm czytający newsy i analizuje je czy jest to dobry news dla danej akcji czy zły
 - dodawnie wartości newsom
-- dodać skale do 10 i bard bendzie analizował 
+- dodać skale od -10 do 10 i bard będzie analizował jaką wartość przyznać newsom 
+
+
+
+
+
+
+
+
 
 RSI   52-88 czeba kupować 
         +1 do sumy bo jest mało ważne
