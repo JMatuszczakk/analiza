@@ -12,6 +12,7 @@ import plotly.graph_objects as go
 
 
 
+
 # Sprawdzanie czy akcja jest w obecnej sesji, jeśli nie, przypisywanie AAPL
 if 'current_ticker' not in st.session_state:
     st.session_state.current_ticker = 'AAPL'
