@@ -4,6 +4,7 @@
 - dodać skrypt który będzie dodawał decyzję i dodać do niego różne wagi
 - liczenie średniej ważonej
 - sprawdzanie czy średnia jest większa czy mniejsza od 1
+- requirements.txt
 # 2. mid term
 - co 30 min sprawdzanie kilkunastu najpopularniejszych akcji 
 - jeśli są git do kupienia, to powiadomienie do ntfy
