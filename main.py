@@ -9,7 +9,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-
+from inicjalizacja_wskaźników import inicjalizujWskaźniki
+from sajdbar import sidebar
+from przydzielaniePunktów import przydzielPunkty
 
 
 
@@ -28,33 +30,20 @@ def get_stock(stock):
 ticker='AAPL'
 #wyświetla makapaka
 print("makapaka")
-#sidebar po lewej stronie strony
-with st.sidebar:
-    with st.form(key='my_form'):
-        #utworzenie dwóch kolumn w sidebarze
-        col1, col2 = st.columns(2)
-        #wyświetla wartości z biblioteki yfinance w dwóch kolumnach w sidebarze
-        with col1:
-            st.metric(label=f":green[Zamknięcie ] :green[{st.session_state['current_ticker']}]", value=f"{truncate(get_stock(st.session_state['current_ticker'])['Close'][0], 3)}$", delta=f"{truncate((get_stock(st.session_state['current_ticker'])['Close'][1] - get_stock(st.session_state['current_ticker'])['Close'][0])*-1, 2)}$")
-        with col2:
-            st.metric(label=f":green[Otwarcie ] :green[{st.session_state['current_ticker']}]", value=f"{truncate(get_stock(st.session_state['current_ticker'])['Open'][0], 3)}$", delta=f"{truncate((get_stock(st.session_state['current_ticker'])['Open'][1] - get_stock(st.session_state['current_ticker'])['Open'][0])*-1, 2)}$")
-        #make the descriptions short
-        ticker = st.text_input('Podaj symbol akcji', 'AAPL')
-        st.session_state['current_ticker'] = ticker
-        doRSI = st.checkbox('RSI - Przekupienie i przesprzedanie')
-        doATR = st.checkbox('ATR - Im wyżysza wartość, tym większa zmienność')
-        doNATR = st.checkbox('NATR - Im wyżysza wartość, tym większa zmienność')
-        doAVGPRICE = st.checkbox('AVGPRICE - Oblicza średnią wartość cenową (dostarcza informacje na temat przeciętnej ceny) ')
-        doADX = st.checkbox('ADX - Podsumowując, ADX pomaga inwestorom określić, czy rynek znajduje się w fazie trendu i oceniać jego siłę')
-        doMACD = st.checkbox('MACD - dostarcza informacji o dynamice zmian w trendzie. ')
-        doSMA = st.checkbox('SMA - indentyfikuje ogólny kierunek ruchu cenowego ')
-        doBollingerBands = st.checkbox('Bollinger Bands - Przekupienie i przesprzedanie, odwracanie ceny')
-        submit_button = st.form_submit_button(label='Execute')
-    st.empty()
-    #sprawdza czy przycisk został wciśnięty
-    if submit_button:
-        st.success('Wykonano!', icon='👏')
-        st.balloons()
+
+fromSidebar = sidebar(st.session_state['current_ticker'])
+doRSI = fromSidebar['doRSI']
+doATR = fromSidebar['doATR']
+doNATR = fromSidebar['doNATR']
+doAVGPRICE = fromSidebar['doAVGPRICE']
+doADX = fromSidebar['doADX']
+doMACD = fromSidebar['doMACD']
+doSMA = fromSidebar['doSMA']
+doBollingerBands = fromSidebar['doBollingerBands']
+atr_color = fromSidebar['atr_color']
+natr_color = fromSidebar['natr_color']
+
+st.balloons()
 #Wyświetla tytuł i nazwę akcji na zielono
 st.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
 #pobiera dane i mówi czy dane zostały pomyślnie pobrane, jeśli nie wyświetla error i tosta
@@ -81,23 +70,9 @@ if xdd:
     st.table(data)
 if jkfjsk:
     miejsce_na_charta.plotly_chart(candle_chart)
+
 #inicjacja wskaźników z TA-liba i zapisanie ich do df data
-data['RSI'] = ta.RSI(data['Close'], timeperiod=2)
-data['ATR'] = ta.ATR(data['High'], data['Low'], data['Close'], timeperiod=2)
-data['NATR'] = ta.NATR(data['High'], data['Low'], data['Close'], timeperiod=2)
-data['AVGPRICE'] = ta.AVGPRICE(data['Open'], data['High'], data['Low'], data['Close'])
-data['RSI'] = data['RSI'].replace(np.nan, 0)
-data['ATR'] = data['ATR'].replace(np.nan, 0)
-data['NATR'] = data['NATR'].replace(np.nan, 0)
-data['AVGPRICE'] = data['AVGPRICE'].replace(np.nan, 0)
-data['ADX'] = ta.ADX(data['High'], data['Low'], data['Close'], timeperiod=14)
-data['MACD'], data['MACD_signal'], _ = ta.MACD(data['Close'], fastperiod=12, slowperiod=26, signalperiod=9)
-data['SMA_short'] = ta.SMA(data['Close'], timeperiod=14)
-data['SMA_long'] = ta.SMA(data['Close'], timeperiod=28)
-upper_band, middle_band, lower_band = ta.BBANDS(data['Close'], timeperiod=10, nbdevup=2, nbdevdn=2)
-data['UpperBand'] = upper_band
-data['MiddleBand'] = middle_band
-data['LowerBand'] = lower_band
+data = inicjalizujWskaźniki(data)
 
 
 
@@ -121,7 +96,6 @@ if doAVGPRICE:
     st.subheader("Oblicza :green[średnią wartość cenową] (dostarcza informacje na temat :green[przeciętnej ceny]) ")
     st.line_chart(data['AVGPRICE'])
 if doADX:
-    
     st.header("ADX")
     st.write("Wartość ADX określa siłę trendu   ", )
     st.write(":blue[ADX poniżej 20: Słaby lub brak trendu.]")
@@ -197,10 +171,18 @@ if doBollingerBands:
 #ATR
 #oblicznie średniej atr
 średniaATR = data['ATR'].mean()
+if data['ATR'][-1] > średniaATR: 
+    atr_color.write(":green[ATR - duża zmienność ceny]")
+else:
+    atr_color.write(":red[ATR - mała zmienność ceny]")
 
+średniaNATR = data['NATR'].mean()
+if data['NATR'][-1] > średniaNATR:
+    natr_color.write(":green[NATR - duża zmienność ceny]")
+else:
+    natr_color.write(":red[NATR - mała zmienność ceny]")
 
-
-
+punkty = przydzielPunkty(data)
 
 # Dotychczas opisane wskaźniki to: RSI, ATR, NATR, AVGPRICE, ADX, MACD, SMA, Bollinger Bands
 # Relative Strength Index (RSI):
