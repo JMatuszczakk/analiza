@@ -12,8 +12,36 @@ import plotly.graph_objects as go
 from inicjalizacja_wskaźników import inicjalizujWskaźniki
 from sajdbar import sidebar
 from przydzielaniePunktów import przydzielSygnały
+import extra_streamlit_components as stx
 
 
+def get_manager():
+    return stx.CookieManager()
+
+cookie_manager = get_manager()
+cookies = cookie_manager.get_all()
+czyJestKuki = 'pomelojekebaba' in cookies
+
+
+if czyJestKuki is not True:
+    hasło = st.sidebar.text_input("Podaj hasło", type='password')
+else:
+    hasło = "pomelojekebaba"
+    st.toast("Zalogowano automatycznie", icon="🍪")
+    
+if hasło != "pomelojekebaba" and czyJestKuki is not True:
+    if hasło != "":
+        for i in range(50):
+            st.error("Nieprawidłowe hasło", icon="🔑")
+            st.sidebar.error("Nieprawidłowe hasło", icon="🔑")
+    else: 
+        for i in range(50):
+            st.info("Podaj hasło", icon="🧑")
+            st.sidebar.info("Podaj hasło", icon="🧑")
+    st.stop()
+if hasło == "pomelojekebaba" and czyJestKuki is not True:
+    cookie_manager.set('pomelojekebaba', 'pomelojekebaba')
+    st.toast("Dodano plik kuki", icon="🍪")
 
 # Sprawdzanie czy akcja jest w obecnej sesji, jeśli nie, przypisywanie AAPL
 if 'current_ticker' not in st.session_state:
@@ -23,15 +51,25 @@ def truncate(n, decimals=0):
     multiplier = 10 ** decimals
     return int(n * multiplier) / multiplier
 #Pobiera dane z biblioteki yfinance i je kejszuje
-@st.cache_data()
 def get_stock(stock):
-    data = yfinance.download(tickers=ticker, period='30d', interval='1h')
+    try:
+        data = yfinance.download(tickers=ticker, period='1d', interval='1m', timeout=5)
+        if data.shape[0] == 0:
+            st.error("Coś poszło nie tak")
+            st.stop()
+    except:
+        st.toast("Gówno ")
+        st.stop()
     return data
 ticker='AAPL'
-#wyświetla makapaka
+#wyświetla makapaka 
 print("makapaka")
 
 fromSidebar = sidebar(st.session_state['current_ticker'])
+st.toast("Gówno")
+ticker = fromSidebar['ticker']
+
+st.session_state['ticker'] = fromSidebar['ticker']
 doRSI = fromSidebar['doRSI']
 doATR = fromSidebar['doATR']
 doNATR = fromSidebar['doNATR']
@@ -42,7 +80,13 @@ doSMA = fromSidebar['doSMA']
 doBollingerBands = fromSidebar['doBollingerBands']
 atr_color = fromSidebar['atr_color']
 natr_color = fromSidebar['natr_color']
-
+rsi_color = fromSidebar['rsi_color']
+avgprice_color = fromSidebar['avgprice_color']
+sma_color = fromSidebar['sma_color']
+sma_color2 = fromSidebar['sma_color2']
+macd_color = fromSidebar['macd_color']
+adx_color = fromSidebar['ADX_color']
+bollinger_bands_color = fromSidebar['bollinger_color']
 st.balloons()
 #Wyświetla tytuł i nazwę akcji na zielono
 st.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
@@ -121,7 +165,11 @@ if doADX:
 if doMACD:
     st.header("MACD")
     st.subheader("Histogram MACD: Różnica między :green[linią MACD] a :red[linią sygnałową]. Histogram pokazuje :green[siłę i kierunek trendu]. Histogram rośnie, gdy różnica między MACD a linią sygnałową rośnie, co może wskazywać na wzrostowy trend. Zmniejszający się histogram może sygnalizować spadek trendu. ")
-    st.line_chart(data['MACD'])
+    mfig = go.Figure(data=[go.Scatter(x=data.index, y=data['MACD'], name='MACD'),])
+    mfig.add_trace(go.Scatter(x=data.index, y=data['MACD_signal'], name='MACD signal'))
+    mfig.add_trace(go.Scatter(x=data.index, y=data['MACD_direction'], name='MACD direction'))
+    mfig.update_layout(title='MACD', xaxis_title='Data', yaxis_title='Cena', template='plotly_dark')
+    st.plotly_chart(mfig)
 if doSMA:
     st.header("SMA")
     st.subheader("SMA jest używane do identyfikowania :green[ogólnego trendu cenowego]. Kiedy aktualna cena :green[przekracza SMA], może to sugerować :green[wzrost cen], a gdy cena :red[spada poniżej SMA], może to sugerować :red[spadek cen].) ")
@@ -170,6 +218,7 @@ if doBollingerBands:
 #Sprawdzanie czy kolorowaćazwy wskaźników
 #ATR
 #oblicznie średniej atr
+
 średniaATR = data['ATR'].mean()
 if data['ATR'][-1] > średniaATR: 
     atr_color.write(":green[ATR - duża zmienność ceny]")
@@ -183,9 +232,77 @@ else:
     natr_color.write(":red[NATR - mała zmienność ceny]")
 punkty = przydzielSygnały(data)
 
+# RSI - powyżej 70 przekupienie, poniżej 30 przesprzedanie, pomiędzy 30 a 70 neutralnie, jeśli jest przekupione i spada, to może być sygnał do sprzedaży, jeśli jest przesprzedane i rośnie, to może być sygnał do kupna
+
+if data['RSI'][-1]>= 70:
+    rsi_color.write(":green[RSI - opłaca się kupić wartość jest powyżej 70]")
+#    licznik +=1
+if data['RSI'][-1]<= 30:
+    rsi_color.write(":red[RSI- nie opłaca się kupić wartość jest mniejsza niż 30]")
+else:
+    rsi_color.write(":blue[RSI - jest w przedziale od 30 do 70 (neutralne)]")
+avgprice_color.write(f":blue[AVGPRICE - przeciętna cena =   {truncate(data['AVGPRICE'][-1], 3)} $] ") 
+
+if data['SMA_long'][-1]> data['Close'][-1]:
+    sma_color.write(":green[SMA - Aktualna cena SMA jest większa od aktualnej ceny akcji co wskazuje na wzrost ceny akcji]")
+ #   licznik+=1
+if data['SMA_long'][-1]< data['Close'][-1]:
+    sma_color.write(":red[SMA - Aktualna cena SMA jest mniejsza od aktualnej ceny akcji co wskazuje na spadek ceny akcji]")
+else:
+    sma_color.write(":blue[SMA - Aktualna cena SMA jest mniej więcej taka sama jak cena akcji(neutralnie)]")
+    
+
+if data['SMA_short'][-1] > data['SMA_long'][-1]:
+    sma_color2.write(":green[SMA crossover - SMA short jest większa od sma long co wskazuje na wzrost ceny akcji]")
+if data['SMA_short'][-1] < data['SMA_long'][-1]:
+    sma_color2.write(":red[SMA crossover - SMA short jest mniejsza od sma long co wskazuje na spadek ceny akcji]")
 
 
+# MACD - prognozowany spadek kiedy linia sygnałowa będzie powyżej linii MACD, prognozowany wzrost kiedy linia sygnałowa będzie poniżej linii MACD
+# if data['MACD'][-1] > data['MACD_signal'][-1]:
+#     macd_color.write(":green[MACD- inia MACD przekracza w górę linii sygnałowej. Oznacza to, że tempo wzrostu jest szybsze niż tempo spadku, co może być interpretowane jako sygnał wzrostowy. ]")
+# else:
+#     macd_color.write(":red[MACD - linia MACD przekracza w dół linii sygnałowej. Sugeruje to, że tempo spadku jest szybsze niż tempo wzrostu, co może być interpretowane jako sygnał spadkowy.]")
+# sprawdzanie czy w ciągu ostatnich 10 wierszy jest sygnał kupna lub sprzedaży
+macdkupno = False
+for i in range(-5, -1):
+    if data['MACD'][i] > data['MACD_signal'][i]: 
+        macdkupno = True
+        break
+if macdkupno == True:
+     macd_color.write(":green[MACD- inia MACD przekracza w górę linii sygnałowej. Oznacza to, że tempo wzrostu jest szybsze niż tempo spadku, co może być interpretowane jako sygnał wzrostowy. ]")
+else:
+     macd_color.write(":red[MACD - linia MACD przekracza w dół linii sygnałowej. Sugeruje to, że tempo spadku jest szybsze niż tempo wzrostu, co może być interpretowane jako sygnał spadkowy.]")
 
+
+#ADX
+tekst222 = ''
+if data['ADX'][-1] < 20:
+    tekst222 = ":blue[ADX - Słaby lub brak trendu]"
+elif data['ADX'][-1] > 20 and data['ADX'][-1] < 25:
+    tekst222 = ":blue[ADX - Początek trendu, ale jeszcze słaby]"
+elif data['ADX'][-1] > 25:
+    tekst222 = ":green[ADX - Silny trend]"
+
+adx_color.write(f"{tekst222}")
+
+buldozer = 1
+for i in range(-3, -1):
+    if data['Close'][i] >= data['UpperBand'][i]:
+        buldozer = 1
+        break
+    elif data['Close'][i] <= data['LowerBand'][i]:
+        buldozer = 0
+    else:
+        buldozer = 2
+#        licznik+=1
+#bollinger_bands_color
+if buldozer == 1:
+    bollinger_bands_color.write(":red[Bollinger Bands - upper band dotyka ceny lub cena wyprzedzi go, oznacza to, że akcja jest nakupiona lub nadceniona. Może to oznaczać potencjalne odwrócenie.(chyba to sugeruje spadek)]")
+elif buldozer == 0:
+    bollinger_bands_color.write(":green[Bollinger Bands - lower band dotyka, lub cena spada poniżej go, oznacza to, że akcja może być nadsprzedana, lub pod wartościowana. Może to oznaczać potencjalne odwrócenie ceny.]")
+else:
+    bollinger_bands_color.write(":blue[Bollinger Bands - Cena jest w przedziale pomiędzy upper band a lower band, zatem nie można nic powiedzieć na temat przekupienia lub przesprzedania.]")
 # Dotychczas opisane wskaźniki to: RSI, ATR, NATR, AVGPRICE, ADX, MACD, SMA, Bollinger Bands
 # Relative Strength Index (RSI):
 # Overbought: Typically above 70
@@ -221,4 +338,3 @@ punkty = przydzielSygnały(data)
 # SMA - 
 # Cena powyżej SMA: Może sugerować wzrost cen.
 # Cena poniżej SMA: Może sugerować spadek cen.        
-
