@@ -184,6 +184,8 @@ else:
 punkty = przydzielSygnały(data)
 
 
+
+
 # Dotychczas opisane wskaźniki to: RSI, ATR, NATR, AVGPRICE, ADX, MACD, SMA, Bollinger Bands
 # Relative Strength Index (RSI):
 # Overbought: Typically above 70
