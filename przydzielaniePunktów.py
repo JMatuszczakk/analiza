@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-def przydzielPunkty(data):
+def przydzielSygnały(data):
     #create an empty df named punkty
     
     pass

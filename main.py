@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from inicjalizacja_wskaźników import inicjalizujWskaźniki
 from sajdbar import sidebar
-from przydzielaniePunktów import przydzielPunkty
+from przydzielaniePunktów import przydzielSygnały
 
 
 
@@ -133,7 +133,7 @@ if doSMA:
     
 
     # slider for how many data to show
-    ile_danych = st.slider('Ile danych pokazać?', 1, 200, 12)
+    ile_danych = st.slider('Ile danych pokazać?', 1, 200, 12, key='dhjajdjakjd2')
     ile_danych = abs(ile_danych - 200)
     # add line for sma long to linechart above
     smas = go.Figure(data=[go.Scatter(x=data.index[ile_danych:], y=data['SMA_short'][ile_danych:], name='SMA_short'),])
@@ -181,8 +181,8 @@ if data['NATR'][-1] > średniaNATR:
     natr_color.write(":green[NATR - duża zmienność ceny]")
 else:
     natr_color.write(":red[NATR - mała zmienność ceny]")
+punkty = przydzielSygnały(data)
 
-punkty = przydzielPunkty(data)
 
 # Dotychczas opisane wskaźniki to: RSI, ATR, NATR, AVGPRICE, ADX, MACD, SMA, Bollinger Bands
 # Relative Strength Index (RSI):
