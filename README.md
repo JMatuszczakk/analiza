@@ -11,7 +11,7 @@
 - zrobić algorytm który pokazuje czy kupić czy sprzedać (średnia + confirmation itd)
 - zrobić analize dla wielu akcji na raz
 - dodać te wiele akcji do jednej tabelki z plusami i minusami'
-- napisać które akcje warto kupić a które sprze
+- napisać które akcje warto kupić a które sprzedać
 
 # 3. long term
 - skrypt llm czytający newsy i analizuje je czy jest to dobry news dla danej akcji czy zły
