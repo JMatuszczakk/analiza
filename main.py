@@ -15,6 +15,8 @@ from przydzielaniePunktów import przydzielSygnały
 import extra_streamlit_components as stx
 
 
+
+
 def get_manager():
     return stx.CookieManager()
 
@@ -64,30 +66,33 @@ def get_stock(stock):
 ticker='AAPL'
 #wyświetla makapaka 
 print("makapaka")
-
+ticker = 'AAPL'
 fromSidebar = sidebar(st.session_state['current_ticker'])
 st.toast("Gówno")
-ticker = fromSidebar['ticker']
+try:
+    ticker = fromSidebar['ticker']
 
-st.session_state['ticker'] = fromSidebar['ticker']
-doRSI = fromSidebar['doRSI']
-doATR = fromSidebar['doATR']
-doNATR = fromSidebar['doNATR']
-doAVGPRICE = fromSidebar['doAVGPRICE']
-doADX = fromSidebar['doADX']
-doMACD = fromSidebar['doMACD']
-doSMA = fromSidebar['doSMA']
-doBollingerBands = fromSidebar['doBollingerBands']
-atr_color = fromSidebar['atr_color']
-natr_color = fromSidebar['natr_color']
-rsi_color = fromSidebar['rsi_color']
-avgprice_color = fromSidebar['avgprice_color']
-sma_color = fromSidebar['sma_color']
-sma_color2 = fromSidebar['sma_color2']
-macd_color = fromSidebar['macd_color']
-adx_color = fromSidebar['ADX_color']
-bollinger_bands_color = fromSidebar['bollinger_color']
-st.balloons()
+    st.session_state['ticker'] = fromSidebar['ticker']
+    doRSI = fromSidebar['doRSI']
+    doATR = fromSidebar['doATR']
+    doNATR = fromSidebar['doNATR']
+    doAVGPRICE = fromSidebar['doAVGPRICE']
+    doADX = fromSidebar['doADX']
+    doMACD = fromSidebar['doMACD']
+    doSMA = fromSidebar['doSMA']
+    doBollingerBands = fromSidebar['doBollingerBands']
+    atr_color = fromSidebar['atr_color']
+    natr_color = fromSidebar['natr_color']
+    rsi_color = fromSidebar['rsi_color']
+    avgprice_color = fromSidebar['avgprice_color']
+    sma_color = fromSidebar['sma_color']
+    sma_color2 = fromSidebar['sma_color2']
+    macd_color = fromSidebar['macd_color']
+    adx_color = fromSidebar['ADX_color']
+    bollinger_bands_color = fromSidebar['bollinger_color']
+    st.balloons()
+except:
+    st.rerun()
 #Wyświetla tytuł i nazwę akcji na zielono
 st.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
 #pobiera dane i mówi czy dane zostały pomyślnie pobrane, jeśli nie wyświetla error i tosta
@@ -214,7 +219,7 @@ if doBollingerBands:
 
 
 
-
+################################################-----KOLORKI-----################################################
 #Sprawdzanie czy kolorowaćazwy wskaźników
 #ATR
 #oblicznie średniej atr
@@ -230,7 +235,7 @@ if data['NATR'][-1] > średniaNATR:
     natr_color.write(":green[NATR - duża zmienność ceny]")
 else:
     natr_color.write(":red[NATR - mała zmienność ceny]")
-punkty = przydzielSygnały(data)
+
 
 # RSI - powyżej 70 przekupienie, poniżej 30 przesprzedanie, pomiędzy 30 a 70 neutralnie, jeśli jest przekupione i spada, to może być sygnał do sprzedaży, jeśli jest przesprzedane i rośnie, to może być sygnał do kupna
 
@@ -274,7 +279,7 @@ if macdkupno == True:
 else:
      macd_color.write(":red[MACD - linia MACD przekracza w dół linii sygnałowej. Sugeruje to, że tempo spadku jest szybsze niż tempo wzrostu, co może być interpretowane jako sygnał spadkowy.]")
 
-
+  
 #ADX
 tekst222 = ''
 if data['ADX'][-1] < 20:
@@ -325,6 +330,10 @@ else:
 # Oversold: When the price touches or falls below the lower band.
 
 
+
+
+sygnały = przydzielSygnały(data)
+st.write(sygnały.tail())
 
 
 

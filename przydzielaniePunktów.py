@@ -3,9 +3,64 @@ import pandas as pd
 import numpy as np
 
 def przydzielSygnały(data):
-    #create an empty df named punkty
+
     
-    pass
+    #create an empty df named punkty
+    sygnały = pd.DataFrame()
+
+
+    ###ATR###
+    średniaATR = data['ATR'].mean()
+    # create a column in sygnały that will tell if atr is triggered. index is timmestamp as in data
+    sygnały.index = data.index
+    
+    sygnały['ATR'] = np.where(data['ATR'] > średniaATR, 1, 0)
+
+    ###RSI###
+    # create a column in sygnały that will tell if rsi is triggered. index is timmestamp as in data
+    sygnały['RSI'] = np.where(data['RSI'] > 70, 1, 0)
+    sygnały['RSI'] = np.where(data['RSI'] < 30, -1, sygnały['RSI'])
+    sygnały['RSI'] = np.where((data['RSI'] > 30) & (data['RSI'] < 70), 0, sygnały['RSI'])
+    
+
+    ###ADX###
+    # create a column in sygnały that will tell if adx is triggered. index is timmestamp as in data
+    sygnały['ADX'] = np.where(data['ADX'] > 25, 1, 0)
+    sygnały['ADX'] = np.where(data['ADX'] < 20, -1, sygnały['ADX'])
+    sygnały['ADX'] = np.where((data['ADX'] > 20) & (data['ADX'] < 25), 0, sygnały['ADX'])
+
+
+    ###MACD###
+    # create a column in sygnały that will tell if macd is triggered. index is timmestamp as in data
+    sygnały['MACD'] = np.where(data['MACD'] > data['MACD_signal'], 1, 0)
+    sygnały['MACD'] = np.where(data['MACD'] < data['MACD_signal'], -1, sygnały['MACD'])
+    sygnały['MACD'] = np.where(data['MACD'] == data['MACD_signal'], 0, sygnały['MACD'])
+
+
+    ###Bollinger Bands###
+    # create a column in sygnały that will tell if bollinger bands is triggered. index is timmestamp as in data
+    sygnały['Bollinger Bands'] = np.where(data['Close'] > data['UpperBand'], 1, 0)
+    sygnały['Bollinger Bands'] = np.where(data['Close'] < data['LowerBand'], -1, sygnały['Bollinger Bands'])
+    sygnały['Bollinger Bands'] = np.where((data['Close'] < data['UpperBand']) & (data['Close'] > data['LowerBand']), 0, sygnały['Bollinger Bands'])
+    
+
+    ###SMA - Crossover###
+    # create a column in sygnały that will tell if sma is triggered. index is timmestamp as in data
+    sygnały['SMAC'] = np.where(data['SMA_short'] > data['SMA_long'], 1, 0)
+    sygnały['SMAC'] = np.where(data['SMA_short'] < data['SMA_long'], -1, sygnały['SMAC'])
+    sygnały['SMAC'] = np.where(data['SMA_short'] == data['SMA_long'], 0, sygnały['SMAC'])
+    
+    ###SMA - Aktualna cena###
+    # create a column in sygnały that will tell if sma is triggered. index is timmestamp as in data
+    sygnały['SMA'] = np.where(data['SMA_short'] > data['Close'], 1, 0)
+    sygnały['SMA'] = np.where(data['SMA_short'] < data['Close'], -1, sygnały['SMA'])
+    sygnały['SMA'] = np.where(data['SMA_short'] == data['Close'], 0, sygnały['SMA'])
+
+
+
+    
+
+    return sygnały
 
 
 
@@ -19,3 +74,14 @@ def przydzielSygnały(data):
 # Cena powyżej SMA: Może sugerować wzrost cen.
 # Cena poniżej SMA: Może sugerować spadek cen.        
 
+'''
+if data['SMA_long'][-1]> data['Close'][-1]:
+    sma_color.write(":green[SMA - Aktualna cena SMA jest większa od aktualnej ceny akcji co wskazuje na wzrost ceny akcji]")
+ #   licznik+=1
+if data['SMA_long'][-1]< data['Close'][-1]:
+    sma_color.write(":red[SMA - Aktualna cena SMA jest mniejsza od aktualnej ceny akcji co wskazuje na spadek ceny akcji]")
+else:
+    sma_color.write(":blue[SMA - Aktualna cena SMA jest mniej więcej taka sama jak cena akcji(neutralnie)]")
+    
+
+'''
