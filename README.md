@@ -1,14 +1,16 @@
+# na jutro:
+- 
+
+
 # 1. short term
-- dodać do data bool'a który będzie przechowywał decyzję o tym czy kupować czy nie
 - dodać int który będzie sumą decyzji
 - dodać skrypt który będzie dodawał decyzję i dodać do niego różne wagi
 - liczenie średniej ważonej
 - sprawdzanie czy średnia jest większa czy mniejsza od 1
-- requirements.txt
 # 2. mid term
-- co 30 min sprawdzanie kilkunastu najpopularniejszych akcji 
-- jeśli są git do kupienia, to powiadomienie do ntfy
-- Ewentualnie podpiąć do tego llm
+- zrobić algorytm który pokazuje czy kupić czy sprzedać (średnia + confirmation itd)
+- zrobić analize dl
+
 # 3. long term
 - skrypt llm czytający newsy i analizuje je czy jest to dobry news dla danej akcji czy zły
 - dodawnie wartości newsom
