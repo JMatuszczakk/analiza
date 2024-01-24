@@ -239,13 +239,14 @@ else:
 
 # RSI - powyżej 70 przekupienie, poniżej 30 przesprzedanie, pomiędzy 30 a 70 neutralnie, jeśli jest przekupione i spada, to może być sygnał do sprzedaży, jeśli jest przesprzedane i rośnie, to może być sygnał do kupna
 
-if data['RSI'][-1]>= 70:
+if data['RSI'][-1]> 70:
     rsi_color.write(":green[RSI - opłaca się kupić wartość jest powyżej 70]")
 #    licznik +=1
-if data['RSI'][-1]<= 30:
+if data['RSI'][-1]< 30:
     rsi_color.write(":red[RSI- nie opłaca się kupić wartość jest mniejsza niż 30]")
 else:
     rsi_color.write(":blue[RSI - jest w przedziale od 30 do 70 (neutralne)]")
+    
 avgprice_color.write(f":blue[AVGPRICE - przeciętna cena =   {truncate(data['AVGPRICE'][-1], 3)} $] ") 
 
 if data['SMA_long'][-1]> data['Close'][-1]:

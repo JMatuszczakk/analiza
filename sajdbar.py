@@ -52,8 +52,6 @@ def sidebar(ticker):
             doSMA = st.checkbox('SMA - indentyfikuje ogólny kierunek ruchu cenowego ')
             doBollingerBands = st.checkbox('Bollinger Bands - Przekupienie i przesprzedanie, odwracanie ceny')
             #Definiowanie st.empty dla kolorowych wskaźników
-            atr_color = st.empty()
-            natr_color = st.empty()
             
             
             if ticker == None:
@@ -69,14 +67,14 @@ def sidebar(ticker):
                 'doMACD': doMACD,
                 'doSMA': doSMA,
                 'doBollingerBands': doBollingerBands,
+                'rsi_color': st.empty(),
                 'atr_color': st.empty(),
                 'natr_color': st.empty(),
-                'rsi_color': st.empty(),
                 'avgprice_color': st.empty(),
+                'ADX_color' : st.empty(),
                 'sma_color': st.empty(),
                 'sma_color2': st.empty(),
                 'macd_color' : st.empty(),
-                'ADX_color' : st.empty(),
                 'bollinger_color' : st.empty(),
             }
     except Exception as e:
