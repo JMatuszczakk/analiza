@@ -68,7 +68,6 @@ ticker='AAPL'
 print("makapaka")
 ticker = 'AAPL'
 fromSidebar = sidebar(st.session_state['current_ticker'])
-st.toast("Gówno")
 try:
     ticker = fromSidebar['ticker']
 
@@ -92,7 +91,7 @@ try:
     bollinger_bands_color = fromSidebar['bollinger_color']
     st.balloons()
 except:
-    st.rerun()
+    st.stop()
 #Wyświetla tytuł i nazwę akcji na zielono
 st.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
 #pobiera dane i mówi czy dane zostały pomyślnie pobrane, jeśli nie wyświetla error i tosta
@@ -102,6 +101,13 @@ try:
 except Exception as e:
     st.error(f'Wystąpił błąd')
     st.toast(e)
+    st.rerun()
+
+if data.shape[0] == 0:
+    st.error("Coś poszło nie tak")
+    # pobiera dane z biblioteki yfinance i je kejszuje
+    st.rerun()
+
 data_for_chart = data.copy()
 #Pokazuje wykres ze świeczkami
 candle_chart = go.Figure(data=[go.Candlestick(x=data_for_chart.index,
@@ -239,10 +245,10 @@ else:
 
 # RSI - powyżej 70 przekupienie, poniżej 30 przesprzedanie, pomiędzy 30 a 70 neutralnie, jeśli jest przekupione i spada, to może być sygnał do sprzedaży, jeśli jest przesprzedane i rośnie, to może być sygnał do kupna
 
-if data['RSI'][-1]> 70:
+if data['RSI'][-1] > 70:
     rsi_color.write(":green[RSI - opłaca się kupić wartość jest powyżej 70]")
 #    licznik +=1
-if data['RSI'][-1]< 30:
+elif data['RSI'][-1]< 30:
     rsi_color.write(":red[RSI- nie opłaca się kupić wartość jest mniejsza niż 30]")
 else:
     rsi_color.write(":blue[RSI - jest w przedziale od 30 do 70 (neutralne)]")
