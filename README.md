@@ -1,6 +1,3 @@
-# na jutro:
-- 
-
 
 # 1. short term
 - dodać int który będzie sumą decyzji
