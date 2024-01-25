@@ -55,7 +55,7 @@ def truncate(n, decimals=0):
 #Pobiera dane z biblioteki yfinance i je kejszuje
 def get_stock(stock):
     try:
-        data = yfinance.download(tickers=ticker, period='1d', interval='1m', timeout=5)
+        data = yfinance.download(tickers=ticker, period='7d', interval='30m', timeout=5)
         if data.shape[0] == 0:
             st.error("Coś poszło nie tak")
             st.stop()
@@ -89,6 +89,7 @@ try:
     macd_color = fromSidebar['macd_color']
     adx_color = fromSidebar['ADX_color']
     bollinger_bands_color = fromSidebar['bollinger_color']
+    podsumowanie = fromSidebar['podsumowanie']
     st.balloons()
 except:
     st.stop()
@@ -109,12 +110,17 @@ if data.shape[0] == 0:
     st.rerun()
 
 data_for_chart = data.copy()
-#Pokazuje wykres ze świeczkami
+
+#Pokazuje wykres ze świeczkami, pokazuje tylko ostatni dzień
+
 candle_chart = go.Figure(data=[go.Candlestick(x=data_for_chart.index,
                 open=data_for_chart['Open'],
                 high=data_for_chart['High'],
                 low=data_for_chart['Low'],
                 close=data_for_chart['Close'])])
+last_48_points_range = [data_for_chart.index[-48], data_for_chart.index[-1]]
+candle_chart.update_xaxes(range=last_48_points_range)
+
 miejsce_na_charta = st.empty()
 
 #Po zaznaczeniu checkboxa pokazuje tabelke
@@ -342,8 +348,15 @@ else:
 sygnały = przydzielSygnały(data)
 st.write(sygnały.tail())
 
+metric_label = "Liczba sygnałów kupna"
+print(sygnały.columns)
+print(sygnały['SMA'][-1])
+current_value = sygnały.iloc[-1]['RSI'] + sygnały.iloc[-1]['MACD'] + sygnały.iloc[-1]['Bollinger Bands'] + sygnały.iloc[-1]['SMAC'] + sygnały.iloc[-1]['SMA'] + sygnały.iloc[-1]['ADX']
+previous_value = sygnały.iloc[-2]['RSI'] + sygnały.iloc[-2]['MACD'] + sygnały.iloc[-2]['Bollinger Bands'] + sygnały.iloc[-2]['SMAC'] + sygnały.iloc[-2]['SMA']
 
-
+delta = current_value - previous_value
+print(sygnały.columns)
+podsumowanie.metric(label=metric_label, value=str(current_value), delta=str(delta))
 
 # RSI - powyżej 70 przekupienie, poniżej 30 przesprzedanie, pomiędzy 30 a 70 neutralnie, jeśli jest przekupione i spada, to może być sygnał do sprzedaży, jeśli jest przesprzedane i rośnie, to może być sygnał do kupna
 # ATR - Im wyżysza wartość, tym większa zmienność, jest to różnica między najwyższą a najniższą ceną

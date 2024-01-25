@@ -38,7 +38,7 @@ def sidebar(ticker):
                 with col1:
                     st.metric(label=f":green[Zamknięcie ] :green[{ticker}]", value=f"{truncate(get_stock(st.session_state['current_ticker'])['Close'][-2], 3)}$", delta=f"{truncate((get_stock(st.session_state['current_ticker'])['Close'][-2] - get_stock(st.session_state['current_ticker'])['Close'][-1])*-1, 2)}$")
                 with col2:
-                    st.metric(label=f":green[Otwarcie (Aktualne) ] :green[{ticker}]", value=f"{truncate(get_stock(st.session_state['current_ticker'])['Open'][-1], 3)}$", delta=f"{truncate((get_stock(st.session_state['current_ticker'])['Open'][-2] - get_stock(st.session_state['current_ticker'])['Open'][-1])*-1, 2)}$")
+                    podsumowanie = st.empty()
                 #make the descriptions short
                 ticker = 'AAPL'
                 ticker = st.text_input('Podaj symbol akcji', 'AAPL')
@@ -60,6 +60,7 @@ def sidebar(ticker):
            
             return {
                 'ticker': ticker,
+                'podsumowanie' : podsumowanie,
                 'doRSI': doRSI,
                 'doATR': doATR,
                 'doNATR': doNATR,
@@ -77,6 +78,7 @@ def sidebar(ticker):
                 'sma_color': st.empty(),
                 'sma_color2': st.empty(),
                 'bollinger_color' : st.empty(),
+                
             }
     except Exception as e:
         st.error("Coś poszło nie tak")
