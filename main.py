@@ -16,33 +16,46 @@ import extra_streamlit_components as stx
 
 
 
-
+# funkcja inicjalizująca cookie managera
 def get_manager():
     return stx.CookieManager()
 
+#inicjalizacja cookie managera
 cookie_manager = get_manager()
+#pobranie wszystkich ciasteczek
 cookies = cookie_manager.get_all()
+#sprawdzenie czy jest ciasteczko o nazwie pomelojekebaba i przypisanie bool'a do zmiennej czyJestKuki
 czyJestKuki = 'pomelojekebaba' in cookies
 
-
+# Jeśli nie ma ciesteczka pomelojekebaba
 if czyJestKuki is not True:
+    # Wyświetl pole do wpisania hasła w sidebarze
     hasło = st.sidebar.text_input("Podaj hasło", type='password')
-else:
+else: # jeśli jest ciasteczko pomelojekebaba
+    # przypisz do zmiennej hasło wartość pomelojekebaba
     hasło = "pomelojekebaba"
+    # wyświetl powiadomienie o zalogowaniu automatycznym
     st.toast("Zalogowano automatycznie", icon="🍪")
     
+# Jeśli hasło to nie pomelojekebaba
 if hasło != "pomelojekebaba" and czyJestKuki is not True:
-    if hasło != "":
+    # Jeśli hasło nie jest puste
+    if hasło != "": 
+        # Wyświetl 50 razy 'nieprawidłowe hasło'
         for i in range(50):
             st.error("Nieprawidłowe hasło", icon="🔑")
             st.sidebar.error("Nieprawidłowe hasło", icon="🔑")
-    else: 
-        for i in range(50):
-            st.info("Podaj hasło", icon="🧑")
+    else: # jeśli hasło jest puste
+        # wyświetl 50 razy 'podaj hasło'
+        for i in range(50): 
+            st.info("Podaj hasło", icon="🧑") 
             st.sidebar.info("Podaj hasło", icon="🧑")
-    st.stop()
-if hasło == "pomelojekebaba" and czyJestKuki is not True:
+    st.stop() # jeśli hasło jest puste lub nie jest pomelojekebaba, zatrzymaj program
+# Jeśli hasło to pomelojekebaba i nie ma ciasteczka pomelojekebaba
+if hasło == "pomelojekebaba" and czyJestKuki is not True: 
+    # Ustaw ciasteczko pomelojekebaba na pomelojekebaba
     cookie_manager.set('pomelojekebaba', 'pomelojekebaba')
+    # Wyświetl powiadomienie o dodaniu ciasteczka
     st.toast("Dodano plik kuki", icon="🍪")
 
 # Sprawdzanie czy akcja jest w obecnej sesji, jeśli nie, przypisywanie AAPL
@@ -54,23 +67,27 @@ def truncate(n, decimals=0):
     return int(n * multiplier) / multiplier
 #Pobiera dane z biblioteki yfinance i je kejszuje
 def get_stock(stock):
+    # spróbuj
     try:
+        # pobierz dane z biblioteki yfinance i przypisuje je do zmiennej data
         data = yfinance.download(tickers=ticker, period='7d', interval='30m', timeout=5)
+        # jeśli data jest pusta
         if data.shape[0] == 0:
+            # wyświetl error i zatrzymaj program
             st.error("Coś poszło nie tak")
             st.stop()
-    except:
+    except: # jeśli jest błąd
+        # wyświetl error i zatrzymaj program
         st.toast("Gówno ")
         st.stop()
-    return data
-ticker='AAPL'
+    return data # zwróć data jeśli nie było błędu
+ticker='AAPL' # przypisz AAPL do ticker na wszelki wypadek jakby się nie wczytał ticker z sidebaru
 #wyświetla makapaka 
 print("makapaka")
 ticker = 'AAPL'
 fromSidebar = sidebar(st.session_state['current_ticker'])
-try:
+try: # próba przypisania zmiennych lokalnych do zrzutu z sidebaru z pliku sajdbar.py 
     ticker = fromSidebar['ticker']
-
     st.session_state['ticker'] = fromSidebar['ticker']
     doRSI = fromSidebar['doRSI']
     doATR = fromSidebar['doATR']
@@ -92,44 +109,55 @@ try:
     podsumowanie = fromSidebar['podsumowanie']
     st.balloons()
 except:
+    # w przypadku błędu - zatrzymaj program
     st.stop()
 #Wyświetla tytuł i nazwę akcji na zielono
 st.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
-#pobiera dane i mówi czy dane zostały pomyślnie pobrane, jeśli nie wyświetla error i tosta
+# próbuje 
 try:
+    # pobrać dane z yfinance i przypisać je do zmiennej data
     data = get_stock(ticker)
+    # wyświetla powiadomienie o wczytaniu danych
     st.toast('Wczytano dane!', icon='✅')
-except Exception as e:
+except Exception as e: # jeśli jest błąd przypisuje nazwę błędu do zmiennej e
+    # wyświetla error, wysyła toasta i zatrzymuje program
     st.error(f'Wystąpił błąd')
     st.toast(e)
     st.rerun()
-
+# jeśli data jest pusta
 if data.shape[0] == 0:
+    # wyświetl error
     st.error("Coś poszło nie tak")
-    # pobiera dane z biblioteki yfinance i je kejszuje
+    # uruchamia ponownie program
     st.rerun()
-
+# kopiuje dane do zmiennej data_for_chart w celu wyświetlenia wykresu
 data_for_chart = data.copy()
 
-#Pokazuje wykres ze świeczkami, pokazuje tylko ostatni dzień
-
+# pokazuje wykres z indeksem jako x, open jako open, high jako high, low jako low, close jako close
 candle_chart = go.Figure(data=[go.Candlestick(x=data_for_chart.index,
                 open=data_for_chart['Open'],
                 high=data_for_chart['High'],
                 low=data_for_chart['Low'],
                 close=data_for_chart['Close'])])
+# ustawia widok wykresu na 48 ostatnich punktów danych
 last_48_points_range = [data_for_chart.index[-48], data_for_chart.index[-1]]
 candle_chart.update_xaxes(range=last_48_points_range)
-
+# zapisuje miejsce na wykres do zmiennej miejsce_na_charta na później
 miejsce_na_charta = st.empty()
 
-#Po zaznaczeniu checkboxa pokazuje tabelke
+# tworzy kolumny na dwa checkboxy
 col1, col2, col3, col4 = st.columns(4)
+# checkbox na tabelkę w col2
 with col2: xdd = st.checkbox('Pokaż tabelke 📝', key='show_table')
+# checkbox na wykres w col1, domyślnie zaznaczony
 with col1: jkfjsk = st.checkbox('Pokaż wykres 📈', key='show_chart23j23nj', value=True)
+# jeśli checkbox na tabelkę jest zaznaczony
 if xdd:
+    # wyświetl tabelkę
     st.table(data)
+# jeśli checkbox na wykres jest zaznaczony
 if jkfjsk:
+    # wyświetl wykres
     miejsce_na_charta.plotly_chart(candle_chart)
 
 #inicjacja wskaźników z TA-liba i zapisanie ich do df data
