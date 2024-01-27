@@ -13,13 +13,15 @@ def przydzielSygnały(data):
     średniaATR = data['ATR'].mean()
     # create a column in sygnały that will tell if atr is triggered. index is timmestamp as in data
     sygnały.index = data.index
-    
+    # w tabelce sygnały w kolumnie ATR przypisz 1 jeśli wartość ATR jest większa od średniej, w przeciwnym wypadku przypisz 0
     sygnały['ATR'] = np.where(data['ATR'] > średniaATR, 1, 0)
 
     ###RSI###
-    # create a column in sygnały that will tell if rsi is triggered. index is timmestamp as in data
+    # w tabelce sygnały w kolumnie RSI przypisz 1 jeśli wartość RSI jest większa od 70, w przeciwnym wypadku przypisz 0
     sygnały['RSI'] = np.where(data['RSI'] > 70, 1, 0)
+    # w tabelce sygnały w kolumnie RSI przypisz -1 jeśli wartość RSI jest mniejsza od 30, w przeciwnym wypadku przypisz tą samą wartość
     sygnały['RSI'] = np.where(data['RSI'] < 30, -1, sygnały['RSI'])
+    # w tabelce sygnały w kolumnie RSI przypisz 0 jeśli wartość RSI jest pomiędzy 30 a 70, w przeciwnym wypadku przypisz tą samą wartość
     sygnały['RSI'] = np.where((data['RSI'] > 30) & (data['RSI'] < 70), 0, sygnały['RSI'])
     
 

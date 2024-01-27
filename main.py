@@ -13,6 +13,7 @@ from inicjalizacja_wskaźników import inicjalizujWskaźniki
 from sajdbar import sidebar
 from przydzielaniePunktów import przydzielSygnały
 import extra_streamlit_components as stx
+from świeczuszki import Świeczuszki
 
 
 
@@ -78,6 +79,13 @@ def get_stock(stock):
             st.stop()
     except: # jeśli jest błąd
         # wyświetl error i zatrzymaj program
+
+        try:
+            # get csv from https://stooq.pl/q/l/?s=san&f=sd2t2ohlcv&h&e=csv
+            data = pd.read_csv(f'https://stooq.pl/q/l/?s={ticker}&f=sd2t2ohlcv&h&e=csv')
+            
+        except:
+            pass
         st.toast("Gówno ")
         st.stop()
     return data # zwróć data jeśli nie było błędu
@@ -107,6 +115,7 @@ try: # próba przypisania zmiennych lokalnych do zrzutu z sidebaru z pliku sajdb
     adx_color = fromSidebar['ADX_color']
     bollinger_bands_color = fromSidebar['bollinger_color']
     podsumowanie = fromSidebar['podsumowanie']
+    świeczuszki = fromSidebar['świeczuszki']
     st.balloons()
 except:
     # w przypadku błędu - zatrzymaj program
@@ -292,11 +301,11 @@ avgprice_color.write(f":blue[AVGPRICE - przeciętna cena =   {truncate(data['AVG
 if data['SMA_long'][-1]> data['Close'][-1]:
     sma_color.write(":green[SMA - Aktualna cena SMA jest większa od aktualnej ceny akcji co wskazuje na wzrost ceny akcji]")
  #   licznik+=1
-if data['SMA_long'][-1]< data['Close'][-1]:
+elif data['SMA_long'][-1]< data['Close'][-1]:
     sma_color.write(":red[SMA - Aktualna cena SMA jest mniejsza od aktualnej ceny akcji co wskazuje na spadek ceny akcji]")
 else:
     sma_color.write(":blue[SMA - Aktualna cena SMA jest mniej więcej taka sama jak cena akcji(neutralnie)]")
-    
+
 
 if data['SMA_short'][-1] > data['SMA_long'][-1]:
     sma_color2.write(":green[SMA crossover - SMA short jest większa od sma long co wskazuje na wzrost ceny akcji]")
@@ -379,12 +388,16 @@ st.write(sygnały.tail())
 metric_label = "Liczba sygnałów kupna"
 print(sygnały.columns)
 print(sygnały['SMA'][-1])
-current_value = sygnały.iloc[-1]['RSI'] + sygnały.iloc[-1]['MACD'] + sygnały.iloc[-1]['Bollinger Bands'] + sygnały.iloc[-1]['SMAC'] + sygnały.iloc[-1]['SMA'] + sygnały.iloc[-1]['ADX']
+current_value = sygnały.iloc[-1]['RSI'] + sygnały.iloc[-1]['MACD'] + sygnały.iloc[-1]['Bollinger Bands'] + sygnały.iloc[-1]['SMAC'] + sygnały.iloc[-1]['SMA']
 previous_value = sygnały.iloc[-2]['RSI'] + sygnały.iloc[-2]['MACD'] + sygnały.iloc[-2]['Bollinger Bands'] + sygnały.iloc[-2]['SMAC'] + sygnały.iloc[-2]['SMA']
 
 delta = current_value - previous_value
 print(sygnały.columns)
 podsumowanie.metric(label=metric_label, value=str(current_value), delta=str(delta))
+
+
+świeczki = Świeczuszki(świeczuszki, data)
+
 
 # RSI - powyżej 70 przekupienie, poniżej 30 przesprzedanie, pomiędzy 30 a 70 neutralnie, jeśli jest przekupione i spada, to może być sygnał do sprzedaży, jeśli jest przesprzedane i rośnie, to może być sygnał do kupna
 # ATR - Im wyżysza wartość, tym większa zmienność, jest to różnica między najwyższą a najniższą ceną

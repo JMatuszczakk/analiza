@@ -1,14 +1,6 @@
 
 # 1. short term
-- dodać int który będzie sumą decyzji
-- dodać skrypt który będzie dodawał decyzję i dodać do niego różne wagi
-- liczenie średniej ważonej
-- sprawdzanie czy średnia jest większa czy mniejsza od 1
-# 2. mid term
 - zrobić algorytm który pokazuje czy kupić czy sprzedać (średnia + confirmation itd)
-- zrobić analize dla wielu akcji na raz
-- dodać te wiele akcji do jednej tabelki z plusami i minusami'
-- napisać które akcje warto kupić a które sprzedać
 - Spróbować znaleść jakieeś api które będzie analizowało polskie akcje (nie jest konieczne)
 
 # 3. long term
@@ -19,7 +11,7 @@
 
 
 
-# 1 Analiza wskaźnikó
+# 1 Analiza wskaźników
 - Rsi - mierzy prędkość i zmiany cen, pomagając inwestorom zidentyfikować, czy aktywo jest przekupione (nadkupione) lub przesprzedane (nadzwyczaj sprzedawane).
 - Przekupienie rynku - Stan, w którym cena danego aktywa jest uznawana za wysoką w stosunku do swojej przewidywanej wartości
 - Przesprzedarz - Stan, w którym cena danego aktywa jest uznawana za niską w stosunku do swojej przewidywanej wartości.

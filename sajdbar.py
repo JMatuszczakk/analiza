@@ -15,7 +15,7 @@ def sidebar(ticker):
         #Pobiera dane z biblioteki yfinance i je kejszuje
         def get_stock(stock):
             try:
-                data = yfinance.download(tickers=ticker, period='1d', interval='1m')
+                data = yfinance.download(tickers=ticker, period='7d', interval='30m')
                 if data.shape[0] == 0:
                     st.error("Coś poszło nie tak")
                     st.stop()
@@ -78,6 +78,7 @@ def sidebar(ticker):
                 'sma_color': st.empty(),
                 'sma_color2': st.empty(),
                 'bollinger_color' : st.empty(),
+                'świeczuszki': st.empty(),
                 
             }
     except Exception as e:
