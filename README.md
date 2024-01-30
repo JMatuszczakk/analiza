@@ -1,3 +1,10 @@
+# na jutro:
+- napisać aby pbrało tickername z nazwy pliku
+- naprawić knoty świeczek (high / low)
+- naprawić zczytywanie świeczek z pliku
+- odseparować streamlit od deepnote
+- 
+
 
 # 1. short term
 - zrobić algorytm który pokazuje czy kupić czy sprzedać (średnia + confirmation itd)
@@ -6,6 +13,7 @@
 # 3. long term
 - skrypt llm czytający newsy i analizuje je czy jest to dobry news dla danej akcji czy zły
 - dodawnie wartości newsom
+- napisać api do playwright żeby zczytywało automatycznie csv z stoq
 - dodać skale od -10 do 10 i bard będzie analizował jaką wartość przyznać newsom
 
 
@@ -38,8 +46,4 @@ Zastosowanie: Pomaga inwestorom zobaczyć ogólny kierunek ruchu cenowego.
 
 
 
-
-RSI   52-88 czeba kupować 
-        +1 do sumy bo jest mało ważne
-        bool = True
 
