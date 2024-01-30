@@ -14,13 +14,18 @@ def sidebar(ticker):
             return int(n * multiplier) / multiplier
         #Pobiera dane z biblioteki yfinance i je kejszuje
         def get_stock(stock):
-            try:
-                data = yfinance.download(tickers=ticker, period='7d', interval='30m')
-                if data.shape[0] == 0:
-                    st.error("Coś poszło nie tak")
-                    st.stop()
-            except:
-                st.toast("Gówno ")
+            if st.session_state['data'] is not None:
+                data = st.session_state['data']
+                st.session_state['ticker'] = ' '
+                st.session_state['current_ticker'] = ' '
+            else:
+                try:
+                    data = yfinance.download(tickers=ticker, period='7d', interval='30m')
+                    if data.shape[0] == 0:
+                        st.error("Coś poszło nie tak")
+                        st.stop()
+                except:
+                    st.toast("Gówno ")
             return data
 
         with st.sidebar:

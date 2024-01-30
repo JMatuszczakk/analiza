@@ -14,6 +14,7 @@ from sajdbar import sidebar
 from przydzielaniePunktów import przydzielSygnały
 import extra_streamlit_components as stx
 from świeczuszki import Świeczuszki
+import polygon
 
 
 # funkcja inicjalizująca cookie managera
@@ -37,6 +38,8 @@ else: # jeśli jest ciasteczko pomelojekebaba
     # wyświetl powiadomienie o zalogowaniu automatycznym
     st.toast("Zalogowano automatycznie", icon="🍪")
     
+if 'data' not in st.session_state:
+    st.session_state['data'] = None
 # Jeśli hasło to nie pomelojekebaba
 if hasło != "pomelojekebaba" and czyJestKuki is not True:
     # Jeśli hasło nie jest puste
@@ -66,27 +69,35 @@ def truncate(n, decimals=0):
     multiplier = 10 ** decimals
     return int(n * multiplier) / multiplier
 #Pobiera dane z biblioteki yfinance i je kejszuje
+źródło = st.sidebar.selectbox(label='Źródło danych', options=['yfinance', 'csv'])
+miejsce_na_file_uploader2 = st.sidebar.empty()
+miejsce_na_file_uploader = st.sidebar.empty()
 def get_stock(stock):
+    if źródło == 'yfinance':
     # spróbuj
-    try:
-        # pobierz dane z biblioteki yfinance i przypisuje je do zmiennej data
-        data = yfinance.download(tickers=ticker, period='7d', interval='30m', timeout=5)
-        # jeśli data jest pusta
-        if data.shape[0] == 0:
-            # wyświetl error i zatrzymaj program
-            st.error("Coś poszło nie tak")
-            st.stop()
-    except: # jeśli jest błąd
-        # wyświetl error i zatrzymaj program
-
         try:
-            # get csv from https://stooq.pl/q/l/?s=san&f=sd2t2ohlcv&h&e=csv
-            data = pd.read_csv(f'https://stooq.pl/q/l/?s={ticker}&f=sd2t2ohlcv&h&e=csv')
-            
+            # pobierz dane z biblioteki yfinance i przypisuje je do zmiennej data
+            data = yfinance.download(tickers=ticker, period='7d', interval='30m', timeout=5)
+            # jeśli data jest pusta
+            if data.shape[0] == 0:
+                # wyświetl error i zatrzymaj program
+                st.error("Coś poszło nie tak")
+                st.stop()
         except:
             pass
-        st.toast("Gówno ")
-        st.stop()
+    elif źródło == 'csv':
+        plik_csv = miejsce_na_file_uploader.file_uploader("Wybierz plik csv", type=['csv'], ) # wyświetl przycisk do wybrania pliku csv
+        if plik_csv is not None:
+            data = pd.read_csv(plik_csv)
+            data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
+            data = data.set_index('Datetime')
+            data = data.drop(['Date', 'Time'], axis=1)
+
+        else:
+            # wyświetl error i zatrzymaj program
+            miejsce_na_file_uploader2.success("Wybierz plik csv")
+            st.stop()
+    st.session_state['data'] = data
     return data # zwróć data jeśli nie było błędu
 ticker='AAPL' # przypisz AAPL do ticker na wszelki wypadek jakby się nie wczytał ticker z sidebaru
 #wyświetla makapaka 
