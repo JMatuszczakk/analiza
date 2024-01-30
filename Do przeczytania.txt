@@ -21,3 +21,5 @@ Wskazówka Cena/Zysk (P/E): Pomaga ocenić, czy cena akcji jest adekwatna w stos
 Wskazówka Cena/Przychody (P/S): Ocena, czy cena akcji jest uzasadniona przez przychody firmy.
 
 Ważne jest, aby pamiętać, że żaden pojedynczy wskaźnik nie dostarcza pełnego obrazu sytuacji i inwestorzy często korzystają z kombinacji różnych wskaźników w swoich analizach. Ponadto, analiza fundamentalna i techniczna są często używane wspólnie, aby uzyskać kompleksowe podejście do inwestycji.
+
+
