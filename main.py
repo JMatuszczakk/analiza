@@ -15,7 +15,7 @@ from przydzielaniePunktów import przydzielSygnały
 import extra_streamlit_components as stx
 from świeczuszki import Świeczuszki
 import polygon
-
+#
 
 # funkcja inicjalizująca cookie managera
 def get_manager():
