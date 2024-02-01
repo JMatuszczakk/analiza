@@ -75,7 +75,8 @@ def truncate(n, decimals=0):
 źródło = st.sidebar.selectbox(label='Źródło danych', options=['yfinance', 'csv'])
 miejsce_na_file_uploader2 = st.sidebar.empty()
 miejsce_na_file_uploader = st.sidebar.empty()
-plik_csv = miejsce_na_file_uploader.file_uploader("Wybierz plik csv", type=['csv']) # wyświetl przycisk do wybrania pliku csv
+if źródło == 'csv':
+    plik_csv = miejsce_na_file_uploader.file_uploader("Wybierz plik csv", type=['csv']) # wyświetl przycisk do wybrania pliku csv
 
 def get_stock(stock):
     if źródło == 'yfinance':
