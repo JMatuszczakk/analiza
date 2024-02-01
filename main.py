@@ -15,12 +15,15 @@ from przydzielaniePunktów import przydzielSygnały
 import extra_streamlit_components as stx
 from świeczuszki import Świeczuszki
 import polygon
+import random
 #
 
 # funkcja inicjalizująca cookie managera
 def get_manager():
     return stx.CookieManager()
 
+if 't' not in st.session_state:
+    st.session_state['t'] = 0
 #inicjalizacja cookie managera
 cookie_manager = get_manager()
 #pobranie wszystkich ciasteczek
@@ -72,6 +75,8 @@ def truncate(n, decimals=0):
 źródło = st.sidebar.selectbox(label='Źródło danych', options=['yfinance', 'csv'])
 miejsce_na_file_uploader2 = st.sidebar.empty()
 miejsce_na_file_uploader = st.sidebar.empty()
+plik_csv = miejsce_na_file_uploader.file_uploader("Wybierz plik csv", type=['csv']) # wyświetl przycisk do wybrania pliku csv
+
 def get_stock(stock):
     if źródło == 'yfinance':
     # spróbuj
@@ -86,13 +91,17 @@ def get_stock(stock):
         except:
             pass
     elif źródło == 'csv':
-        plik_csv = miejsce_na_file_uploader.file_uploader("Wybierz plik csv", type=['csv'], ) # wyświetl przycisk do wybrania pliku csv
+        plik_csv =stock
         if plik_csv is not None:
             data = pd.read_csv(plik_csv)
             data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
             data = data.set_index('Datetime')
             data = data.drop(['Date', 'Time'], axis=1)
+            #set st.session_state['ticker'] to filename without .csv
+            st.session_state['current_ticker'] = plik_csv.name[:-7]
+            
 
+            
         else:
             # wyświetl error i zatrzymaj program
             miejsce_na_file_uploader2.success("Wybierz plik csv")
@@ -103,6 +112,8 @@ ticker='AAPL' # przypisz AAPL do ticker na wszelki wypadek jakby się nie wczyta
 #wyświetla makapaka 
 print("makapaka")
 ticker = 'AAPL'
+if źródło == 'csv':
+    get_stock(plik_csv)
 fromSidebar = sidebar(st.session_state['current_ticker'])
 try: # próba przypisania zmiennych lokalnych do zrzutu z sidebaru z pliku sajdbar.py 
     ticker = fromSidebar['ticker']
@@ -126,23 +137,33 @@ try: # próba przypisania zmiennych lokalnych do zrzutu z sidebaru z pliku sajdb
     bollinger_bands_color = fromSidebar['bollinger_color']
     podsumowanie = fromSidebar['podsumowanie']
     świeczuszki = fromSidebar['świeczuszki']
-    st.balloons()
+#    st.balloons()
 except:
     # w przypadku błędu - zatrzymaj program
-    st.stop()
+    #st.stop()
+    pass
 #Wyświetla tytuł i nazwę akcji na zielono
-st.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
+miejsce_na_tytuł = st.empty()
 # próbuje 
+if źródło == 'csv':
+    st.session_state['ticker'] = st.session_state['current_ticker']
+    ticker = st.session_state['current_ticker']
+    miejsce_na_tytuł.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
+    data = st.session_state['data']
+else:
+    st.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
 try:
+    if źródło != 'csv':
     # pobrać dane z yfinance i przypisać je do zmiennej data
-    data = get_stock(ticker)
+        data = get_stock(ticker)
     # wyświetla powiadomienie o wczytaniu danych
     st.toast('Wczytano dane!', icon='✅')
 except Exception as e: # jeśli jest błąd przypisuje nazwę błędu do zmiennej e
     # wyświetla error, wysyła toasta i zatrzymuje program
     st.error(f'Wystąpił błąd')
-    st.toast(e)
-    st.rerun()
+    st.error(e)
+    #st.stop()
+    pass
 # jeśli data jest pusta
 if data.shape[0] == 0:
     # wyświetl error
@@ -153,14 +174,7 @@ if data.shape[0] == 0:
 data_for_chart = data.copy()
 
 # pokazuje wykres z indeksem jako x, open jako open, high jako high, low jako low, close jako close
-candle_chart = go.Figure(data=[go.Candlestick(x=data_for_chart.index,
-                open=data_for_chart['Open'],
-                high=data_for_chart['High'],
-                low=data_for_chart['Low'],
-                close=data_for_chart['Close'])])
-# ustawia widok wykresu na 48 ostatnich punktów danych
-last_48_points_range = [data_for_chart.index[-48], data_for_chart.index[-1]]
-candle_chart.update_xaxes(range=last_48_points_range)
+
 # zapisuje miejsce na wykres do zmiennej miejsce_na_charta na później
 miejsce_na_charta = st.empty()
 
@@ -177,6 +191,15 @@ if xdd:
 # jeśli checkbox na wykres jest zaznaczony
 if jkfjsk:
     # wyświetl wykres
+    candle_chart = go.Figure(data=[go.Candlestick(x=data_for_chart.index,
+                open=data_for_chart['Open'],
+                high=data_for_chart['High'],
+                low=data_for_chart['Low'],
+                close=data_for_chart['Close'])])
+
+    # ustawia widok wykresu na 48 ostatnich punktów danych
+    last_48_points_range = [data_for_chart.index[-48], data_for_chart.index[-1]]
+    candle_chart.update_xaxes(range=last_48_points_range)
     miejsce_na_charta.plotly_chart(candle_chart)
 
 #inicjacja wskaźników z TA-liba i zapisanie ich do df data
