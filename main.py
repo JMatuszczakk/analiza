@@ -99,7 +99,7 @@ def get_stock(stock):
             data = data.set_index('Datetime')
             data = data.drop(['Date', 'Time'], axis=1)
             #set st.session_state['ticker'] to filename without .csv
-            st.session_state['current_ticker'] = plik_csv.name[:-7]
+            st.session_state['current_ticker'] = plik_csv.name[:-7].upper()
             
 
             
@@ -149,7 +149,7 @@ miejsce_na_tytuł = st.empty()
 if źródło == 'csv':
     st.session_state['ticker'] = st.session_state['current_ticker']
     ticker = st.session_state['current_ticker']
-    miejsce_na_tytuł.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
+    miejsce_na_tytuł.title(f'Analiza techniczna :green[{plik_csv.name[:-7].upper()}]')
     data = st.session_state['data']
 else:
     st.title(f'Analiza techniczna :green[{st.session_state["current_ticker"]}]')
@@ -329,8 +329,11 @@ elif data['RSI'][-1]< 30:
     rsi_color.write(":red[RSI- nie opłaca się kupić wartość jest mniejsza niż 30]")
 else:
     rsi_color.write(":blue[RSI - jest w przedziale od 30 do 70 (neutralne)]")
-    
-avgprice_color.write(f":blue[AVGPRICE - przeciętna cena =   {truncate(data['AVGPRICE'][-1], 3)} $] ") 
+if źródło == 'csv':
+    waluta = 'zł'
+else:
+    waluta = '$'
+avgprice_color.write(f":blue[AVGPRICE - przeciętna cena =   {truncate(data['AVGPRICE'][-1], 3)} {waluta}] ") 
 
 if data['SMA_long'][-1]> data['Close'][-1]:
     sma_color.write(":green[SMA - Aktualna cena SMA jest większa od aktualnej ceny akcji co wskazuje na wzrost ceny akcji]")
