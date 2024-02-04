@@ -1,14 +1,21 @@
 # na jutro:
-- napisać aby pbrało tickername z nazwy pliku
-- naprawić knoty świeczek (high / low)
-- naprawić zczytywanie świeczek z pliku
+- 
+- zrobić na deepnote aplikacje , która będzie wysyłała nam powiadomienia, jeżeli bendzie jakaś mocna okazja (dal paru akcji, które chcemy śledzić)
+- 
 - odseparować streamlit od deepnote
 - 
 
 
 # 1. short term
 - zrobić algorytm który pokazuje czy kupić czy sprzedać (średnia + confirmation itd)
-- Spróbować znaleść jakieeś api które będzie analizowało polskie akcje (nie jest konieczne)
+- Nakarmić llm danymi z taliba, suchymi danymi, swieczkami i wytłumaczeniami i zobaczyć jak zareaguje
+
+RSI ATR ..... 
+OPISUJEMY RSI ATR ....
+ŚWIECXZKI + ich opis
+_______________
+Podsumowanie
+
 
 # 3. long term
 - skrypt llm czytający newsy i analizuje je czy jest to dobry news dla danej akcji czy zły

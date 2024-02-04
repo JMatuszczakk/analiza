@@ -186,6 +186,7 @@ with col2: xdd = st.checkbox('Pokaż tabelke 📝', key='show_table')
 # checkbox na wykres w col1, domyślnie zaznaczony
 with col1: jkfjsk = st.checkbox('Pokaż wykres 📈', key='show_chart23j23nj', value=True)
 # jeśli checkbox na tabelkę jest zaznaczony
+with col3: świeczuszkiCzyPokazać = st.checkbox('Świeczuszki 🕯️', key='show_candles')
 if xdd:
     # wyświetl tabelkę
     st.table(data)
@@ -433,7 +434,7 @@ print(sygnały.columns)
 podsumowanie.metric(label=metric_label, value=str(current_value), delta=str(delta))
 
 
-świeczki = Świeczuszki(świeczuszki, data)
+świeczki = Świeczuszki(świeczuszki, data, świeczuszkiCzyPokazać)
 
 
 # RSI - powyżej 70 przekupienie, poniżej 30 przesprzedanie, pomiędzy 30 a 70 neutralnie, jeśli jest przekupione i spada, to może być sygnał do sprzedaży, jeśli jest przesprzedane i rośnie, to może być sygnał do kupna

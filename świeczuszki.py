@@ -5,7 +5,9 @@ import streamlit as st
 
 
 
-def Świeczuszki(świeczuszki, data):
+
+
+def Świeczuszki(świeczuszki, data, czy_pokazać = False):
     świeczki = pd.DataFrame(index=data.index)
     świeczki['Doji'] = ta.CDLDOJI(data['Open'], data['High'], data['Low'], data['Close'])
     świeczki['Doji Star'] = ta.CDLDOJISTAR(data['Open'], data['High'], data['Low'], data['Close'])
@@ -68,15 +70,18 @@ def Świeczuszki(świeczuszki, data):
     print(świeczki)
 
     lista = []
-
-    st.table(świeczki)
+    wykryte2 = []
+    if czy_pokazać:
+        st.dataframe(świeczki.tail())
     st.sidebar.subheader("Świeczki które są: ")
     for i in świeczki.columns:
         for y in świeczki[i][-4:]:
-            if y == 100 or y == -100:
+            if y != 0:
                 lista.append(i)
+                wykryte2.append((i, y))
+                
 
-
+    
     na_plus = 0
     na_minus = 0
     na_odwrócenie = 0
@@ -282,7 +287,6 @@ def Świeczuszki(świeczuszki, data):
         wykryte.append(('Rising/Falling Three Methods', świeczki['Rising/Falling Three Methods'][-1]))
     # if 'Separating Lines' in lista: 
     #     st.sidebar.write(":green[Separating Lines] ")  
-        
     if 'Shooting Star' in lista: 
         st.sidebar.write(":green[Shooting Star] - odwrócenie trendu na spadkowy")  
         na_odwrócenie += 1
@@ -328,8 +332,8 @@ def Świeczuszki(świeczuszki, data):
 
     
 
-
-
+        # 0, 0, -100, 0, 0, 0
+       # [-4:-1]
 
     # if 'Unique 3 River' in lista: 
     #     st.sidebar.write(":green[Unique 3 River]")  
@@ -344,7 +348,20 @@ def Świeczuszki(świeczuszki, data):
         kontynuacja += 1
         wykryte.append(('Upside/Downside Gap Three Methods', świeczki['Upside/Downside Gap Three Methods'][-1]))
     
-    st.table(wykryte)
+
+
+    wykrytedf = pd.DataFrame(wykryte2, columns=["Formacja", "Wartość ([-100 ⬇], [100 ⬆])"])
+    #remove index
+    wykrytedf = wykrytedf.reset_index(drop=True)
+    #display table without index
+   # where value is equal to 100 than replace it with ↑
+    # if equal to -100 than replace it with ↓
+    # wykrytedf = wykrytedf.replace(100, ':green[↑]')
+    # wykrytedf = wykrytedf.replace(-100, '↓')
+    # make it an numpy array
+    styled_df = wykrytedf.style.applymap(lambda x: 'background-color: red' if x == -100 else ('background-color: green' if x == 100 else 'background-color: blue'))
+
+    st.sidebar.dataframe(styled_df)
     return świeczki
 
 
