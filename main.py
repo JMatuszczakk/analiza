@@ -258,7 +258,6 @@ if doMACD:
     mfig.add_trace(go.Scatter(x=data.index, y=data['MACD_signal'], name='MACD signal'))
     mfig.add_trace(go.Scatter(x=data.index, y=data['MACD_direction'], name='MACD direction'))
     mfig.add_hline(y=data['MACD_signal'][-1], line_dash="dash", line_color="red", annotation_text="Linia sygnałowa", annotation_position="top right")
-    mfig.add_hline(y=0, line_dash="dot", line_color="blue", annotation_text="Zero")
     mfig.update_layout(title='MACD', xaxis_title='Data', yaxis_title='Cena', template='plotly_dark')
     st.plotly_chart(mfig)
 if doSMA:
