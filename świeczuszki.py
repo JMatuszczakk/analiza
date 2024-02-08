@@ -145,7 +145,7 @@ def Świeczuszki(świeczuszki, data, czy_pokazać = False):
         na_minus += 1
         wykryte.append(('Advance Block', świeczki['Advance Block'][-1]))
     if 'Belt Hold' in lista:
-        st.sidebar.write(":green[Belt Hold] - odwrócenie trendu")
+        st.sidebar.write(":green[Belt Hold] - odwrócenie trendu w zalżności od wartości w tabelce"")
         na_odwrócenie += 1
         wykryte.append(('Belt Hold', świeczki['Belt Hold'][-1]))
     if 'Breakaway' in lista:
