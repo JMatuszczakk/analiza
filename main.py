@@ -39,7 +39,7 @@ else: # jeśli jest ciasteczko pomelojekebaba
     # przypisz do zmiennej hasło wartość pomelojekebaba
     hasło = "pomelojekebaba"
     # wyświetl powiadomienie o zalogowaniu automatycznym
-    st.toast("Zalogowano automatycznie", icon="🍪")
+    #st.toast("Zalogowano automatycznie", icon="🍪")
     
 if 'data' not in st.session_state:
     st.session_state['data'] = None
@@ -158,7 +158,7 @@ try:
     # pobrać dane z yfinance i przypisać je do zmiennej data
         data = get_stock(ticker)
     # wyświetla powiadomienie o wczytaniu danych
-    st.toast('Wczytano dane!', icon='✅')
+    #st.toast('Wczytano dane!', icon='✅')
 except Exception as e: # jeśli jest błąd przypisuje nazwę błędu do zmiennej e
     # wyświetla error, wysyła toasta i zatrzymuje program
     st.error(f'Wystąpił błąd')
