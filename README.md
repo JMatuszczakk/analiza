@@ -19,8 +19,8 @@ Podsumowanie
 
 
 # Świeczki nie tak
-    - Advance Block
-    - 
+    - Advance Block - 
+    - Shooting Star - odwrócenie trendu na spadkowy więc co tam robi wartość -100
 
 # 3. long term
 - skrypt llm czytający newsy i analizuje je czy jest to dobry news dla danej akcji czy zły
