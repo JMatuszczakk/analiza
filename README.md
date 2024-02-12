@@ -3,7 +3,7 @@
 - zrobić na deepnote aplikacje , która będzie wysyłała nam powiadomienia, jeżeli bendzie jakaś mocna okazja (dal paru akcji, które chcemy śledzić)
 - 
 - odseparować streamlit od deepnote
-- 
+- stochastic oscillator
 
 
 # 1. short term
@@ -19,8 +19,8 @@ Podsumowanie
 
 
 # Świeczki nie tak
-    - Advance Block - 
-    - Shooting Star - odwrócenie trendu na spadkowy więc co tam robi wartość -100
+    - Advance Block
+    - 
 
 # 3. long term
 - skrypt llm czytający newsy i analizuje je czy jest to dobry news dla danej akcji czy zły

@@ -205,7 +205,7 @@ def Świeczuszki(świeczuszki, data, czy_pokazać = False):
     # if 'High-Wave' in lista:
     #     st.sidebar.write(":green[High-Wave]")
     if 'Hikkake' in lista:
-        st.sidebar.write(":green[Hikkake] - Formacja hikkake to formacja cenowa używana przez analityków technicznych i traderów, którzy chcą zidentyfikować krótkoterminowy ruch w kierunku rynku. Wzór ma dwie różne konfiguracje, jedna sugeruje krótkotrwały ruch w dół w akcji cenowej, a druga konfiguracja sugeruje krótkoterminowy trend wzrostowy ceny.")
+        st.sidebar.write(":green[Hikkake] - formacja wzrostowa, ale nie jest to pewne")
         na_plus += 1
         wykryte.append(('Hikkake', świeczki['Hikkake'][-1]))
     if 'Homing Pigeon' in lista:
@@ -248,7 +248,7 @@ def Świeczuszki(świeczuszki, data, czy_pokazać = False):
     #     st.sidebar.write(":green[Long Line]")
         wykryte.append(('Long Line', świeczki['Long Line'][-1]))
     if 'Marubozu' in lista: 
-        st.sidebar.write(":green[Marubozu] - Marubozu sugeruje, że momentum na rynku jest silne w kierunku danej świecy (byczego lub niedźwiedziego), a podczas sesji handlowej nie ma zbyt wiele wahania. Inwestorzy często interpretują formacje Marubozu jako potencjalne sygnały kontynuacji obecnej tendencji.") 
+        st.sidebar.write(":green[Marubozu] - brak wahania, stabilnie, git, otwarcie długoterminowej pozycji") 
         wykryte.append(('Marubozu', świeczki['Marubozu'][-1])) 
     if 'Matching Low' in lista: 
         st.sidebar.write(":green[Matching Low] - dno spadku, wymaga potwierdzenia")

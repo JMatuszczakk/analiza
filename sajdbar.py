@@ -56,6 +56,7 @@ def sidebar(ticker):
                 doMACD = st.checkbox('MACD - dostarcza informacji o dynamice zmian w trendzie. ')
                 doSMA = st.checkbox('SMA - indentyfikuje ogólny kierunek ruchu cenowego ')
                 doBollingerBands = st.checkbox('Bollinger Bands - Przekupienie i przesprzedanie, odwracanie ceny')
+                doStochastic = st.checkbox('Stochastic - Przekupienie i przesprzedanie')
                 st.form_submit_button(label='Zatwierdź')
             #Definiowanie st.empty dla kolorowych wskaźników
             
@@ -84,6 +85,8 @@ def sidebar(ticker):
                 'sma_color2': st.empty(),
                 'bollinger_color' : st.empty(),
                 'świeczuszki': st.empty(),
+                'doStochastic': doStochastic,
+                'stochastic_color': st.empty(),
                 
             }
     except Exception as e:

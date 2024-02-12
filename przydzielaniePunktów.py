@@ -57,6 +57,12 @@ def przydzielSygnały(data):
     sygnały['SMA'] = np.where(data['SMA_short'] < data['Close'], -1, sygnały['SMA'])
     sygnały['SMA'] = np.where(data['SMA_short'] == data['Close'], 0, sygnały['SMA'])
 
+    ###Stochastic###
+    # create a column in sygnały that will tell if stochastic is triggered. index is timmestamp as in data
+    sygnały['Stochastic'] = np.where(data['Stochastic'] > data['Stochastic_signal'], 1, 0)
+    sygnały['Stochastic'] = np.where(data['Stochastic'] < data['Stochastic_signal'], -1, sygnały['Stochastic'])
+    sygnały['Stochastic'] = np.where(data['Stochastic'] == data['Stochastic_signal'], 0, sygnały['Stochastic'])
+    
 
 
     

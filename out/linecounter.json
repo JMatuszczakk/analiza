@@ -1,0 +1,141 @@
+{
+    "extension": "linecounter",
+    "version": "0.2.7",
+    "workspace": "/Users/jakubmatuszczak/Desktop/Projekty/analiza",
+    "linecount": [
+        {
+            "version": "0.2.7",
+            "counttime": "2024-02-10 19:11:05",
+            "filesum": 16,
+            "codesum": 915,
+            "commentsum": 210,
+            "blanksum": 181,
+            "statistics": {
+                ".py": {
+                    "code": 841,
+                    "comment": 209,
+                    "blank": 153
+                },
+                ".md": {
+                    "code": 35,
+                    "comment": 0,
+                    "blank": 26
+                },
+                ".json": {
+                    "code": 30,
+                    "comment": 1,
+                    "blank": 2
+                },
+                ".txt": {
+                    "code": 9,
+                    "comment": 0,
+                    "blank": 0
+                }
+            },
+            "filelist": [
+                {
+                    "blank": 2,
+                    "code": 30,
+                    "comment": 1,
+                    "filename": ".devcontainer/devcontainer.json"
+                },
+                {
+                    "filename": "__pycache__/inicjalizacja_wskaźników.cpython-311.pyc",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "__pycache__/main.cpython-311.pyc",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "__pycache__/przydzielaniePunktów.cpython-311.pyc",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "__pycache__/sajdbar.cpython-311.pyc",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "__pycache__/test.cpython-311.pyc",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "__pycache__/świeczuszki.cpython-311.pyc",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 32,
+                    "code": 113,
+                    "comment": 18,
+                    "filename": "deepnote.py"
+                },
+                {
+                    "blank": 0,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "inicjalizacja_wskaźników.py"
+                },
+                {
+                    "blank": 52,
+                    "code": 290,
+                    "comment": 115,
+                    "filename": "main.py"
+                },
+                {
+                    "blank": 24,
+                    "code": 26,
+                    "comment": 38,
+                    "filename": "przydzielaniePunktów.py"
+                },
+                {
+                    "blank": 26,
+                    "code": 35,
+                    "comment": 0,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 0,
+                    "code": 9,
+                    "comment": 0,
+                    "filename": "requirements.txt"
+                },
+                {
+                    "blank": 11,
+                    "code": 73,
+                    "comment": 7,
+                    "filename": "sajdbar.py"
+                },
+                {
+                    "blank": 2,
+                    "code": 7,
+                    "comment": 2,
+                    "filename": "test.py"
+                },
+                {
+                    "blank": 32,
+                    "code": 316,
+                    "comment": 29,
+                    "filename": "świeczuszki.py"
+                }
+            ]
+        }
+    ]
+}

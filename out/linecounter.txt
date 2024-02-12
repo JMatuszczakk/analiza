@@ -1,0 +1,36 @@
+===============================================================================
+EXTENSION NAME : linecounter
+EXTENSION VERSION : 0.2.7
+-------------------------------------------------------------------------------
+count time : 2024-02-10 19:11:05
+count workspace : /Users/jakubmatuszczak/Desktop/Projekty/analiza
+total files : 16
+total code lines : 915
+total comment lines : 210
+total blank lines : 181
+
+    statistics
+   |      extension|     total code|  total comment|    total blank|percent|
+   -------------------------------------------------------------------------
+   |            .py|            841|            209|            153|     92|
+   |            .md|             35|              0|             26|    3.8|
+   |          .json|             30|              1|              2|    3.3|
+   |           .txt|              9|              0|              0|   0.98|
+   -------------------------------------------------------------------------
+.devcontainer/devcontainer.json, code is 30, comment is 1, blank is 2.
+__pycache__/inicjalizacja_wskaźników.cpython-311.pyc, it is a binary file.
+__pycache__/main.cpython-311.pyc, it is a binary file.
+__pycache__/przydzielaniePunktów.cpython-311.pyc, it is a binary file.
+__pycache__/sajdbar.cpython-311.pyc, it is a binary file.
+__pycache__/test.cpython-311.pyc, it is a binary file.
+__pycache__/świeczuszki.cpython-311.pyc, it is a binary file.
+deepnote.py, code is 113, comment is 18, blank is 32.
+inicjalizacja_wskaźników.py, code is 16, comment is 0, blank is 0.
+main.py, code is 290, comment is 115, blank is 52.
+przydzielaniePunktów.py, code is 26, comment is 38, blank is 24.
+README.md, code is 35, comment is 0, blank is 26.
+requirements.txt, code is 9, comment is 0, blank is 0.
+sajdbar.py, code is 73, comment is 7, blank is 11.
+test.py, code is 7, comment is 2, blank is 2.
+świeczuszki.py, code is 316, comment is 29, blank is 32.
+===============================================================================

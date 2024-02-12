@@ -13,4 +13,5 @@ def inicjalizujWskaźniki(data):
     data['UpperBand'] = upper_band
     data['MiddleBand'] = middle_band
     data['LowerBand'] = lower_band
+    data['Stochastic'], data['Stochastic_signal'] = ta.STOCH(data['High'], data['Low'], data['Close'], fastk_period=5, slowk_period=3, slowd_period=3)
     return data

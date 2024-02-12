@@ -16,7 +16,8 @@ import extra_streamlit_components as stx
 from świeczuszki import Świeczuszki
 import polygon
 import random
-#
+
+
 
 # funkcja inicjalizująca cookie managera
 def get_manager():
@@ -138,6 +139,8 @@ try: # próba przypisania zmiennych lokalnych do zrzutu z sidebaru z pliku sajdb
     bollinger_bands_color = fromSidebar['bollinger_color']
     podsumowanie = fromSidebar['podsumowanie']
     świeczuszki = fromSidebar['świeczuszki']
+    doStochastic = fromSidebar['doStochastic']
+    stochasticColor = fromSidebar['stochastic_color']
 #    st.balloons()
 except:
     # w przypadku błędu - zatrzymaj program
@@ -301,7 +304,11 @@ if doBollingerBands:
         fig.update_layout(title='Bollinger Bands', xaxis_title='Data', yaxis_title='Cena', template='plotly_dark')
         # Wyświetlenie wykresu
         st.plotly_chart(fig)
-
+if doStochastic:
+    st.header("Stochastic Oscillator")
+    st.write("Oscylator stochastyczny to wskaźnik momentum porównujący bieżącą cenę zamknięcia papieru wartościowego z zakresem jego cen w określonym przedziale czasowym. Czułość oscylatora na ruchy rynkowe można zmniejszyć, dopasowując okres czasu lub wyliczając średnią ruchomą z wyników. Wskaźnik jest używany do generowania sygnałów handlowych wykupienia i wyprzedania, wykorzystując przedział wartości ograniczony do zakresu 0-100.")
+    st.line_chart(data['Stochastic'])
+    st.subheader("Oscylator stochastyczny przedstawia aktualne ceny w skali od 0 do 100, gdzie 0 oznacza dolną granicę z wybranego okresu, a 100 reprezentuje górną granicę. Odczyt oscylatora powyżej 80 wskazuje, że cena danego aktywa znajduje się blisko górnego zakresu, natomiast odczyt poniżej 20 oznacza, że cena jest blisko dolnej granicy zakresu.")
 
 
 ################################################-----KOLORKI-----################################################
@@ -417,6 +424,14 @@ else:
 # Bollinger Bands:
 # Overbought: When the price touches or exceeds the upper band.
 # Oversold: When the price touches or falls below the lower band.
+
+if data['Stochastic'][-1] > 80:
+    stochasticColor.write(":red[Stochastic Oscillator - Oscylator stochastyczny przedstawia aktualne ceny w skali od 0 do 100, gdzie 0 oznacza dolną granicę z wybranego okresu, a 100 reprezentuje górną granicę. Odczyt oscylatora powyżej 80 wskazuje, że cena danego aktywa znajduje się blisko górnego zakresu, natomiast odczyt poniżej 20 oznacza, że cena jest blisko dolnej granicy zakresu.]")
+elif data['Stochastic'][-1] < 20:
+    stochasticColor.write(":green[Stochastic Oscillator - Oscylator stochastyczny przedstawia aktualne ceny w skali od 0 do 100, gdzie 0 oznacza dolną granicę z wybranego okresu, a 100 reprezentuje górną granicę. Odczyt oscylatora powyżej 80 wskazuje, że cena danego aktywa znajduje się blisko górnego zakresu, natomiast odczyt poniżej 20 oznacza, że cena jest blisko dolnej granicy zakresu.]")
+else:
+    stochasticColor.write(":blue[Stochastic Oscillator - Oscylator stochastyczny przedstawia aktualne ceny w skali od 0 do 100, gdzie 0 oznacza dolną granicę z wybranego okresu, a 100 reprezentuje górną granicę. Odczyt oscylatora powyżej 80 wskazuje, że cena danego aktywa znajduje się blisko górnego zakresu, natomiast odczyt poniżej 20 oznacza, że cena jest blisko dolnej granicy zakresu.]")
+
 
 
 
